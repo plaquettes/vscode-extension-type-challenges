@@ -10,18 +10,47 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:type-challenges.helloWorld",
-    "onCommand:type-challenges.selectedQuestion",
-    "onView:typeChallenges"
+    "onView:type-challenges",
+    "onCommand:type-challenges.pickQuestion",
+    "onCommand:type-challenges.refresh"
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
+    "viewsWelcome": [
       {
-        "command": "type-challenges.helloWorld",
-        "title": "Hello World"
+        "view": "tcq",
+        "contents": "Refreshing... [Author](https://www.github.com/rain120).\n[Refresh](command:type-challenges.refresh)"
       }
     ],
+    "commands": [
+      {
+        "command": "type-challenges.pickQuestion",
+        "title": "Pick Question",
+        "category": "type-challenges"
+      },
+      {
+        "command": "type-challenges.refresh",
+        "title": "Refresh Question",
+        "icon": "public/assets/refresh.svg"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "type-challenges",
+        "key": "",
+        "mac": ""
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "type-challenges.refresh",
+          "icon": "public/assets/refresh.svg",
+          "when": "view == type-challenges",
+          "group": "navigation"
+        }
+      ]
+    },
     "viewsContainers": {
       "activitybar": [
         {
@@ -34,7 +63,7 @@
     "views": {
       "type-challenges": [
         {
-          "id": "typeChallenges",
+          "id": "type-challenges",
           "name": "Typescript 体操",
           "contextualTitle": "Typescript 体操",
           "when": ""
@@ -55,11 +84,12 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
-    "jsonpath": "^1.1.1"
+    "highlight.js": "^11.6.0",
+    "markdown-it": "^13.0.1"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",
-    "@types/jsonpath": "^0.2.0",
+    "@types/markdown-it": "^12.2.3",
     "@types/mocha": "^9.1.1",
     "@types/node": "16.x",
     "@types/vscode": "^1.70.0",

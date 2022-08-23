@@ -5,11 +5,12 @@ import {
     EventEmitter,
     Event,
     ExtensionContext,
+    TreeItemCollapsibleState,
 } from 'vscode';
 
-import { getQuestions, QuestionProps } from '../api/question';
-import { getContent } from '../api/content';
-import { TypeChallengesNode } from './TypeChallengesNode';
+import {getQuestions, QuestionProps} from '../api/question';
+import {error} from '../utils/toast';
+import {TypeChallengesNode} from './TypeChallengesNode';
 
 const formatName = (name: string = '') => {
     const current = name.split('-');
@@ -21,8 +22,11 @@ const formatName = (name: string = '') => {
 export class TypeChallengesTreeProvider implements TreeDataProvider<TypeChallengesNode> {
     protected readonly viewType: string = 'typeChallenges.TreeView';
 
-    // @ts-ignore
     private context: ExtensionContext;
+
+    constructor(context: ExtensionContext) {
+        this.context = context;
+    }
 
     private onDidChangeTreeDataEvent: EventEmitter<TypeChallengesNode | undefined | null> =
         new EventEmitter<TypeChallengesNode | undefined | null>();
@@ -36,33 +40,40 @@ export class TypeChallengesTreeProvider implements TreeDataProvider<TypeChalleng
 
     public async refresh(): Promise<void> {
         this.onDidChangeTreeDataEvent.fire(null);
+        this.getChildren();
     }
 
     getTreeItem(element: TypeChallengesNode): TreeItem | Thenable<TreeItem> {
         return {
-            ...element,
-            command: element.previewCommand
+            label: element.label ?? element.name,
+            // collapsibleState: TreeItemCollapsibleState.Collapsed,
+            iconPath: element.iconPath,
+            command: element.previewCommand,
+            resourceUri: element.uri,
         };
     }
 
     getChildren(
         element?: TypeChallengesNode | undefined
     ): import('vscode').ProviderResult<TypeChallengesNode[]> {
-        console.log(element);
-        return getQuestions().then(({data}) => {
-            return (data ?? []).map((q: QuestionProps) => ({
-                ...q,
-                label: formatName(q.name),
-            }));
-        });
+        return getQuestions()
+            .then(({data}) => {
+                return (data ?? []).map(
+                    (q: QuestionProps) =>
+                        new TypeChallengesNode({
+                            ...q,
+                            label: formatName(q.name),
+                        })
+                );
+            })
+            .catch(err => {
+                error(err?.message ?? err);
+            });
     }
 
-    public static initTreeViewItem() {
-        const typeChallengesTreeProvider = new TypeChallengesTreeProvider();
-        // getContent().then(res => {
-        //     console.log(res);
-        // });
+    public static initTreeViewItem(context: ExtensionContext) {
+        const typeChallengesTreeProvider = new TypeChallengesTreeProvider(context);
 
-        window.registerTreeDataProvider('typeChallenges', typeChallengesTreeProvider);
+        window.registerTreeDataProvider('type-challenges', typeChallengesTreeProvider);
     }
 }
