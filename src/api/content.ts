@@ -1,16 +1,23 @@
-import * as jsonPath from 'jsonpath';
-import {get} from '../utils/request';
+import { get } from '../utils/request';
 
-// TODO: test(04484-medium-istuple)
-export const getContent = (name: string = '04484-medium-istuple') => {
-    return get(`/contents/questions/${name}`, {
-        transformResponse: [
-            data => {
-                console.log(data);
-                const json = JSON.parse(data);
-                const extensionsUrl = jsonPath.query(json, '$[*].url');
-                return extensionsUrl;
-            },
-        ],
-    });
+export interface ReadMeInfoProps {
+  content?: string;
+  name?: string;
+  label?: string;
+}
+
+export const getReadMeInfo = (name: string) => {
+  return get(`/contents/questions/${name}/README.zh-CN.md`, {
+    data: {
+      ref: 'main'
+    },
+    headers: {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      'Content-Type': 'application/json; application/vnd.github+json;'
+    }
+  });
+};
+
+export const encodeContent = (content: string) => {
+  return Buffer.from(content ?? '', 'base64').toString();
 };

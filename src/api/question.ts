@@ -1,20 +1,23 @@
-import { DEFAULT_REF } from '../const/api';
-import {get} from '../utils/request';
+import { get } from '../utils/request';
 
 export interface QuestionProps {
-    download_url?: string;
-    git_url?: string;
-    html_url?: string;
-    label?: string;
-    name?: string;
-    mode?: string;
-    path?: string;
-    sha?: string;
-    size?: number;
-    type?: string;
-    url?: string;
+  content?: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  download_url?: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  git_url?: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  html_url?: string;
+  label: string;
+  name: string;
+  mode: string;
+  path: string;
+  sha: string;
+  size: number;
+  type: string;
+  url: string;
 }
 
 export const getQuestions = () => {
-    return get('/contents/questions');
+  return get('/contents/questions');
 };
