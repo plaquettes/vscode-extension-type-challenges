@@ -61,6 +61,8 @@ export class TypeChallengesTreeProvider
   getChildren(
     element?: TypeChallengesNode | undefined
   ): import('vscode').ProviderResult<TypeChallengesNode[]> {
+    // TODO: cache and read it.
+
     return getQuestions()
       .then(({ data }) => {
         return (data ?? []).map(

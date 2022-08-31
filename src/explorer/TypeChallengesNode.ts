@@ -1,11 +1,5 @@
 import * as path from 'path';
-import {
-  Command,
-  ThemeIcon,
-  TreeItem,
-  TreeItemCollapsibleState,
-  Uri
-} from 'vscode';
+import { Command, ThemeIcon, Uri } from 'vscode';
 import { QuestionProps } from '../api/question';
 
 export class TypeChallengesNode {
