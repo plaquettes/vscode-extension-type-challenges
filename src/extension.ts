@@ -1,18 +1,21 @@
 import * as vscode from 'vscode';
 
 import { TypeChallengesTreeProvider } from './explorer/TypeChallengesTreeProvider';
-import {success} from './utils/toast';
+import { initTypeChallengesPreview } from './webview/TypeChallengesPreviewProvider';
+import { pick } from './command/pick';
+import { refresh } from './command/refresh';
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log('Congratulations, your extension "type-challenges" is now active!');
+  console.log(
+    'Congratulations, your extension "type-challenges" is now active!'
+  );
 
-    TypeChallengesTreeProvider.initTreeViewItem();
+  const typeChallengesTreeProvider =
+    TypeChallengesTreeProvider.initTreeViewItem(context);
 
-    context.subscriptions.push(
-        vscode.commands.registerCommand('type-challenges.itemClick', label => {
-            success(label);
-        })
-    );
+  pick(context);
+  refresh(context, typeChallengesTreeProvider);
+  initTypeChallengesPreview(context);
 }
 
 export function deactivate() {}

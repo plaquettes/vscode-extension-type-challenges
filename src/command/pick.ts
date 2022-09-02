@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
 import { encodeContent, getReadMeInfo } from '../api/content';
-import { TypeChallengesNode } from '../explorer/TypeChallengesNode';
 import { success } from '../utils/toast';
 import { typeChallengesPreviewProvider } from '../webview/TypeChallengesPreviewProvider';
 
