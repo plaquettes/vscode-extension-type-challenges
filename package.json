@@ -29,6 +29,11 @@
         "category": "type-challenges"
       },
       {
+        "command": "type-challenges.SolveQuestion",
+        "title": "Solve Question",
+        "category": "type-challenges"
+      },
+      {
         "command": "type-challenges.refresh",
         "title": "Refresh Question",
         "icon": "public/assets/refresh.svg"
@@ -89,10 +94,12 @@
   },
   "dependencies": {
     "axios": "^0.27.2",
-    "highlight.js": "^11.6.0",
-    "markdown-it": "^13.0.1"
+    "fs-extra": "^10.1.0",
+    "markdown-it": "13.0.1",
+    "shiki": "^0.11.1"
   },
   "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
     "@types/glob": "^7.2.0",
     "@types/markdown-it": "^12.2.3",
     "@types/mocha": "^9.1.1",
